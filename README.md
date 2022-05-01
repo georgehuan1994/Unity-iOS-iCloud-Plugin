@@ -17,7 +17,7 @@ iOSPlugin.ShowAlertConfirmation("Basic Alert Confirmation", "Hello this is a bas
 ### Sharing a Message and Url
 
 ```csharp
-iOSPlugin.ShareMessage("Welcome To iOS Bridge Essentials", "https://www.github.com/dilmerv/UnityiOSBridgeEssentials");
+iOSPlugin.ShareMessage("Welcome To iOS Bridge Essentials", "https://github.com/georgehuan1994/Unity-iOS-iCloud-Plugin");
 ```
 
 ### Get Battery Status
