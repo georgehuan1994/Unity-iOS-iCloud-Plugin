@@ -71,21 +71,6 @@ iOSPlugin.ShowAlertConfirmation("Basic Alert Confirmation", "Hello this is a bas
 iOSPlugin.ShareMessage("Welcome To iOS Bridge Essentials", "https://github.com/georgehuan1994/Unity-iOS-iCloud-Plugin");
 ```
 
-### Get Battery Status
-
-```csharp
-iOSPlugin.GetBatteryStatus();
-
-public enum BatteryStatus 
-{
-    UIDeviceBatteryStateUnknown = 0,
-    UIDeviceBatteryStateUnplugged = 1,
-    UIDeviceBatteryStateCharging = 2,
-    UIDeviceBatteryStateFull = 3
-}
-
-```
-
 ### Get Battery Level
 
 ```csharp

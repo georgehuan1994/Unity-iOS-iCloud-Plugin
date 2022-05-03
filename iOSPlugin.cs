@@ -5,13 +5,6 @@ using UnityEngine;
 
 public class iOSPlugin : MonoBehaviour
 {
-    public enum BatteryStatus
-    {
-        UIDeviceBatteryStateUnknown = 0,
-        UIDeviceBatteryStateUnplugged = 1,
-        UIDeviceBatteryStateCharging = 2,
-        UIDeviceBatteryStateFull = 3
-    }
 
 #if UNITY_IOS
 
@@ -67,11 +60,6 @@ public class iOSPlugin : MonoBehaviour
         _ShareMessage(message, url);
     }
 
-    public static BatteryStatus GetBatteryStatus()
-    {
-        return (BatteryStatus) _GetBatteryStatus();
-    }
-
     public static string GetBatteryLevel()
     {
         return _GetBatteryLevel();
@@ -123,12 +111,6 @@ public class iOSPlugin : MonoBehaviour
     public static void ShareMessage(string title, string url = "")
     {
         Debug.LogError($"{MethodBase.GetCurrentMethod()} {NOT_SUPPORTED}");
-    }
-
-    public static int GetBatteryStatus()
-    {
-        Debug.LogError($"{MethodBase.GetCurrentMethod()} {NOT_SUPPORTED}");
-        return 0;
     }
 
     public static string GetBatteryLevel()
