@@ -1,59 +1,51 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIHandler : MonoBehaviour
 {
-    private const string ICLOUD_KEY = "myAppKey";
-
-    void ShowBasicAlert() 
+    public void ShowBasicAlert()
     {
         iOSPlugin.ShowAlert("Basic Alert", "Hello this is a basic alert !");
     }
 
-    void ShowAlertConfirmation()
+    public void ShowAlertConfirmation()
     {
         iOSPlugin.ShowAlertConfirmation("Basic Alert Confirmation", "Hello this is a basic confirmation !", "CallBack");
     }
 
-    void RotateUpAlertConfirmation()
+    public void CallBack()
     {
-        iOSPlugin.ShowAlertConfirmation("Rotating Up", "Should I Rotate Up?", "RotateUpCallBack");
+        Debug.Log("CallBack!");
     }
 
-    void RotateDownAlertConfirmation()
+    public void ShareMessage()
     {
-        iOSPlugin.ShowAlertConfirmation("Rotating Down", "Should I Rotate Down?", "RotateDownCallBack");
+        iOSPlugin.ShareMessage("Sharing a message!", "https://github.com/georgehuan1994/Unity-iOS-iCloud-Plugin");
     }
 
-    void ShareMessage()
-    {
-        iOSPlugin.ShareMessage("Sharing a message!", "https://www.youtube.com/c/dilmervalecillos");
-    }
-
-    void BatteryStatus()
+    public void BatteryStatus()
     {
         var batteryStatus = iOSPlugin.GetBatteryStatus();
         iOSPlugin.ShowAlert("Battery Status", batteryStatus.ToString());
     }
 
-    void BatteryLevel()
+    public void BatteryLevel()
     {
         string batteryLevel = iOSPlugin.GetBatteryLevel();
         iOSPlugin.ShowAlert("Battery Level", batteryLevel);
     }
 
-    void iCloudGetValue()
+    public void iCloudGetStringValue()
     {
-        string savedValue = iOSPlugin.iCloudGetStringValue(ICLOUD_KEY);
+        string savedValue = iOSPlugin.iCloudGetStringValue("UIHandler.String.Key");
         iOSPlugin.ShowAlert("iCloud Value", string.IsNullOrEmpty(savedValue) ? "Nothing Saved Yet..." : savedValue);
     }
 
-    void iCloudSaveValue()
+    public void iCloudSaveStringValue()
     {
         string valueToSave = System.Guid.NewGuid().ToString();
-        bool success = iOSPlugin.iCloudSaveStringValue(ICLOUD_KEY, valueToSave);
+        bool success = iOSPlugin.iCloudSaveStringValue("UIHandler.String.Key", valueToSave);
         
-        if(success)
+        if (success)
         {
             iOSPlugin.ShowAlert("iCloud Value Saved Success", valueToSave);
         }

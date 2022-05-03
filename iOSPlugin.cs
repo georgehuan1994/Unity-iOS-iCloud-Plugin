@@ -1,10 +1,11 @@
 using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class iOSPlugin : MonoBehaviour
 {
-    public enum BatteryStatus 
+    public enum BatteryStatus
     {
         UIDeviceBatteryStateUnknown = 0,
         UIDeviceBatteryStateUnplugged = 1,
@@ -12,9 +13,9 @@ public class iOSPlugin : MonoBehaviour
         UIDeviceBatteryStateFull = 3
     }
 
-    private const string NOT_SUPPORTED = "not supported on this platform";
-    
-    #if UNITY_IOS
+#if UNITY_IOS
+
+    #region EXTERN METHOD
 
     [DllImport("__Internal")]
     private static extern void _ShowAlert(string title, string message);
@@ -48,7 +49,9 @@ public class iOSPlugin : MonoBehaviour
 
     [DllImport("__Internal")]
     private static extern bool _iCloudSaveBoolValue(string key, bool value);
-    
+
+    #endregion
+
     public static void ShowAlert(string title, string message)
     {
         _ShowAlert(title, message);
@@ -66,7 +69,7 @@ public class iOSPlugin : MonoBehaviour
 
     public static BatteryStatus GetBatteryStatus()
     {
-        return (BatteryStatus)_GetBatteryStatus();
+        return (BatteryStatus) _GetBatteryStatus();
     }
 
     public static string GetBatteryLevel()
@@ -104,14 +107,15 @@ public class iOSPlugin : MonoBehaviour
         return _iCloudSaveBoolValue(key, value);
     }
 
-    #else
+#else
+    private const string NOT_SUPPORTED = "not supported on this platform";
 
     public static void ShowAlert(string title, string message)
     {
         Debug.LogError($"{MethodBase.GetCurrentMethod()} {NOT_SUPPORTED}");
     }
 
-    public static void ShowAlertConfirmation(string title, string message)
+    public static void ShowAlertConfirmation(string title, string message, string callBack)
     {
         Debug.LogError($"{MethodBase.GetCurrentMethod()} {NOT_SUPPORTED}");
     }
@@ -127,15 +131,16 @@ public class iOSPlugin : MonoBehaviour
         return 0;
     }
 
-    public static void GetBatteryLevel()
+    public static string GetBatteryLevel()
     {
         Debug.LogError($"{MethodBase.GetCurrentMethod()} {NOT_SUPPORTED}");
+        return string.Empty;
     }
 
     public static string iCloudGetValue(string key)
     {
         Debug.LogError($"{MethodBase.GetCurrentMethod()} {NOT_SUPPORTED}");
-        return "";
+        return string.Empty;
     }
 
     public static bool iCloudSaveValue(string key, string value)
@@ -167,6 +172,18 @@ public class iOSPlugin : MonoBehaviour
         Debug.LogError($"{MethodBase.GetCurrentMethod()} {NOT_SUPPORTED}");
         return false;
     }
+    
+    public static string iCloudGetStringValue(string key)
+    {
+        Debug.LogError($"{MethodBase.GetCurrentMethod()} {NOT_SUPPORTED}");
+        return string.Empty;
+    }
 
-    #endif
+    public static bool iCloudSaveStringValue(string key, string value)
+    {
+        Debug.LogError($"{MethodBase.GetCurrentMethod()} {NOT_SUPPORTED}");
+        return false;
+    }
+
+#endif
 }

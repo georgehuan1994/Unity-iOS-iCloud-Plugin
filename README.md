@@ -1,6 +1,57 @@
-# Unity-iOS-iCloud-Plugin
+# Unity iOS iCloud Plugin
 
-Unity3d iOS Plugin for communicating with iOS Native Code from Unity.
+Unity3d iOS iCloud Key-Value Storage Plugin and Native Alert Dialog.
+
+### 注意事项
+
+调用 iCloud Key-Value Store 相关方法之前，需要做好以下准备：
+
+1. 确保构建时使用的描述文件 (.mobileprovision) 已启用了 iCloud Capabilities
+2. 确保主要的 Xcodeproj 中包含 iCloud Entitlement 文件 (.entitlements)
+
+### 如何添加 iCloud Entitlement 文件?
+
+#### 手动添加
+
+1. 在 Xcode 工程中，选择对应的 xcodeproj (Unity-iPhone)，导航到 Signing & Capabilities 标签页
+2. 点击左上角的 `+Capability`，选择 iCloud，并启用 Key-Value storage
+
+#### 自动添加
+
+在 Unity 中使用构建后处理自动添加：
+
+```csharp
+[PostProcessBuild(1)]
+public static void CapabilityEntitlementsAdder(BuildTarget target, string pathToBuiltProject)
+{
+    if (target == BuildTarget.iOS)
+    {
+        string pbxPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
+        var capManager = new ProjectCapabilityManager(pbxPath, "Unity-iPhone.entitlements", "Unity-iPhone");
+        capManager.AddiCloud(true, false, false, false, new string[]{});
+        capManager.WriteToFile();
+    }
+}
+```
+
+完成上述步骤后，工程中会多出一个名为 `Unity-iPhone.entitlements` 的文件：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>com.apple.developer.icloud-container-identifiers</key>
+	<array/>
+	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
+	<string>$(TeamIdentifierPrefix)$(CFBundleIdentifier)</string>
+</dict>
+</plist>
+```
+
+----
+
+## Method
 
 ### Basic Alert
 
@@ -23,9 +74,8 @@ iOSPlugin.ShareMessage("Welcome To iOS Bridge Essentials", "https://github.com/g
 ### Get Battery Status
 
 ```csharp
-iOSPlugin.GetBatteryStatus()
+iOSPlugin.GetBatteryStatus();
 
-// possible statuses are return in the BatterStatus enum
 public enum BatteryStatus 
 {
     UIDeviceBatteryStateUnknown = 0,
@@ -45,53 +95,35 @@ iOSPlugin.GetBatteryLevel()
 ### Save String Value to iCloud
 
 ```csharp
-bool success = iOSPlugin.iCloudSaveStringValue(ICLOUD_KEY, valueToSave);
+bool success = iOSPlugin.iCloudSaveStringValue("MyStringKey", valueToSave);
 ```
 
 ### Get String Value from iCloud
 
 ```csharp
-string savedValue = iOSPlugin.iCloudGetStringValue(ICLOUD_KEY);
-```
-
-### iCloud Entitlement Requirement
-
-Be sure to include the entitlement below otherwise icloud key value store will not work
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>com.apple.developer.icloud-container-identifiers</key>
-	<array/>
-	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
-	<string>$(TeamIdentifierPrefix)$(CFBundleIdentifier)</string>
-</dict>
-</plist>
+string savedValue = iOSPlugin.iCloudGetStringValue("MyStringKey");
 ```
 
 ### Save Integer Value to iCloud
 
 ```csharp
-bool success = iOSPlugin.iCloudSaveIntValue(ICLOUD_KEY, valueToSave);
+bool success = iOSPlugin.iCloudSaveIntValue("MyIntgKey", valueToSave);
 ```
 
 ### Get Integer Value from iCloud
 
 ```csharp
-int savedValue = iOSPlugin.iCloudGetIntValue(ICLOUD_KEY);
+int savedValue = iOSPlugin.iCloudGetIntValue("MyIntgKey");
 ```
-
 
 ### Save Bool Value to iCloud
 
 ```csharp
-bool success = iOSPlugin.iCloudSaveBoolValue(ICLOUD_KEY, valueToSave);
+bool success = iOSPlugin.iCloudSaveBoolValue("MyBoolgKey", valueToSave);
 ```
 
 ### Get Bool Value from iCloud
 
 ```csharp
-bool savedValue = iOSPlugin.iCloudGetBoolValue(ICLOUD_KEY);
+bool savedValue = iOSPlugin.iCloudGetBoolValue("MyBoolgKey");
 ```
