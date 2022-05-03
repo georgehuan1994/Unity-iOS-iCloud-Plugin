@@ -12,11 +12,6 @@ public class UIHandler : MonoBehaviour
         iOSPlugin.ShowAlertConfirmation("Basic Alert Confirmation", "Hello this is a basic confirmation !", "CallBack");
     }
 
-    public void CallBack()
-    {
-        Debug.Log("CallBack!");
-    }
-
     public void ShareMessage()
     {
         iOSPlugin.ShareMessage("Sharing a message!", "https://github.com/georgehuan1994/Unity-iOS-iCloud-Plugin");
